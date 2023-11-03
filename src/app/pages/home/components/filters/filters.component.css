@@ -1,0 +1,16 @@
+.category-btn {
+    background-color: #fff;
+    border-radius: 5px;
+    color: #000;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    height: 40px;
+    line-height: 40px;
+    margin-right: 10px;
+    padding: 0 15px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+}

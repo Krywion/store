@@ -1,10 +1,10 @@
 <mat-expansion-panel *ngIf="categories">
     <mat-expansion-panel-header>
-        <mat-panel-title> CATEGORIES </mat-panel-title>
+        <mat-panel-title> Filters </mat-panel-title>
     </mat-expansion-panel-header>
     <mat-selection-list [multiple]="false">
         <div *ngFor="let category of categories">
-            <button class="category-btn" mat-button (click)="onShowCategory(category)">{{ category }}</button>
+            <button class="category-btn" mat-button (click)="onChangeCategory(category)">{{ category }}</button>
         </div>
     </mat-selection-list>
 </mat-expansion-panel>

@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {CategoryService} from "../../../../services/category.service";
 
 @Component({
   selector: 'app-filters',
@@ -7,17 +8,22 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class FiltersComponent implements OnInit{
   @Output() showCategory = new EventEmitter<string>();
+  @Output() changeCategory = new EventEmitter<string>();
 
-  categories = ['shoes', 'sports'];
+  categories: string[] = [];
 
-  constructor() { }
+  constructor(private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-
+    this.categoryService.getCategories().subscribe((categories) => {
+        this.categories = categories;
+    });
+    console.log(this.categories)
   }
 
-  onShowCategory(category: string): void {
-    this.showCategory.next(category);
+  onChangeCategory(category: string): void {
+    this.showCategory.next(category)
+    this.changeCategory.emit(category);
   }
 
 }

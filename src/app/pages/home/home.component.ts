@@ -16,15 +16,16 @@ export class HomeComponent implements OnInit {
   rowHeight: number = ROWS_HEIGHT[this.cols];
   category: string | undefined;
   products: Product[] = [];
+  itemsAmount: number = 12;
 
   constructor(private cartService: CartService, private productService: ProductService) {
   }
 
+
+
   ngOnInit(): void {
-    this.productService.getProducts().subscribe((products) => {
+    this.productService.getProducts(this.itemsAmount).subscribe((products) => {
       this.products = products;
-      console.log(this.products);
-      console.log(this.products.length);
     });
   }
 
@@ -35,7 +36,6 @@ export class HomeComponent implements OnInit {
 
   onShowCategory(newCategory: string): void {
     this.category = newCategory;
-    console.log(this.category)
   }
 
   onAddToCart(product: Product): void {
@@ -46,5 +46,27 @@ export class HomeComponent implements OnInit {
       quantity: 1,
       id: product.id,
     });
+  }
+
+  onItemsCountChange(itemsAmount: number): void {
+      this.itemsAmount = itemsAmount;
+      this.productService.getProducts(this.itemsAmount).subscribe((products) => {
+      this.products = products;
+    });
+    for (const product of this.products) {
+      console.log(product.category)
+
+    }
+    }
+
+
+  onChangeCategory(category: string): void {
+        this.productService.getProductsByCategory(this.itemsAmount, category).subscribe((products) => {
+        this.products = products;
+        });
+    }
+
+  getProductsOfCategory(category: string): Product[] {
+    return this.products.filter((product) => product.category === category);
   }
 }

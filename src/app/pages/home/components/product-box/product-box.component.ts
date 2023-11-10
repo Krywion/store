@@ -14,7 +14,6 @@ export class ProductBoxComponent implements OnInit {
     constructor() { }
 
     ngOnInit(): void {
-        console.log(this.product)
     }
 
     onAddToCart(): void {

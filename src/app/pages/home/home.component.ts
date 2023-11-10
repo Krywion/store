@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   category: string | undefined;
   products: Product[] = [];
   itemsAmount: number = 12;
+  sort: string = 'desc';
 
   constructor(private cartService: CartService, private productService: ProductService) {
   }
@@ -68,5 +69,16 @@ export class HomeComponent implements OnInit {
 
   getProductsOfCategory(category: string): Product[] {
     return this.products.filter((product) => product.category === category);
+  }
+
+  sortChange(sort: string) {
+    this.sort = sort;
+    this.products.sort((a, b) => {
+      if (sort === 'asc') {
+        return a.price - b.price;
+      } else {
+        return b.price - a.price;
+      }
+    });
   }
 }

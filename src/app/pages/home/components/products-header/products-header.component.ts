@@ -11,6 +11,7 @@ export class ProductsHeaderComponent implements OnInit{
   itemsShowCount: number = 12;
   @Output() itemsShowCountChange = new EventEmitter<number>;
   @Output() columnsCountChange = new EventEmitter<number>;
+  @Output() sortChange = new EventEmitter<string>;
 
   constructor() {
 
@@ -22,6 +23,7 @@ export class ProductsHeaderComponent implements OnInit{
 
   onSortUpdated(newSort: string): void {
     this.sort = newSort;
+    this.sortChange.emit(this.sort);
   }
 
   onItemsUpdated(count: number): void {

@@ -16,11 +16,19 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts(amount: number): Observable<Product[]> {
-    return this.http.get<Product[]>(this.productsUrl + '/get-products?amount=' + amount, {headers: this.headers});
+  getProducts(page: number, amount: number): Observable<Product[]> {
+    return this.http.get<Product[]>(this.productsUrl + '/get-products/'+ page + '/' + amount, {headers: this.headers});
   }
 
-  getProductsByCategory(amount: number, category: string, ): Observable<Product[]> {
-    return this.http.get<Product[]>(this.productsUrl + '/get-products-by-category?amount=' + amount + "&category=" + category, {headers: this.headers});
+  getProductsByCategory(page: number, amount: number, category: string): Observable<Product[]> {
+    return this.http.get<Product[]>(this.productsUrl + '/get-products-by-category/' + page + '/' + amount + '/' + category, {headers: this.headers});
+  }
+
+  getProductsCount(): Observable<number> {
+    return this.http.get<number>(this.productsUrl + '/get-products-count', {headers: this.headers});
+  }
+
+  getProductsCountByCategory(category: string): Observable<number> {
+    return this.http.get<number>(this.productsUrl + '/get-products-count/' + category, {headers: this.headers});
   }
 }

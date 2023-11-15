@@ -24,6 +24,9 @@ import { ProductBoxComponent } from './pages/home/components/product-box/product
 import { CartComponent } from './pages/cart/cart.component';
 import { CartService } from "./services/cart.service";
 import { HttpClientModule } from "@angular/common/http";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { FormsModule } from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -33,7 +36,7 @@ import { HttpClientModule } from "@angular/common/http";
     ProductsHeaderComponent,
     FiltersComponent,
     ProductBoxComponent,
-    CartComponent
+    CartComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +54,10 @@ import { HttpClientModule } from "@angular/common/http";
     MatTableModule,
     MatBadgeModule,
     MatSnackBarModule,
-    HttpClientModule
+    HttpClientModule,
+    MatPaginatorModule,
+    FormsModule,
+    MatInputModule
   ],
   providers: [CartService],
   bootstrap: [AppComponent]

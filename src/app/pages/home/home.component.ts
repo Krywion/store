@@ -18,16 +18,15 @@ export class HomeComponent implements OnInit {
   products: Product[] = [];
   itemsAmount: number = 12;
   sort: string = 'desc';
+  page: number = 0;
+  maxPage: number = 0;
 
   constructor(private cartService: CartService, private productService: ProductService) {
   }
 
-
-
   ngOnInit(): void {
-    this.productService.getProducts(this.itemsAmount).subscribe((products) => {
-      this.products = products;
-    });
+    this.getProducts();
+    this.getMaxPage();
   }
 
   onColumnsCountChange(colsNum: number): void {
@@ -50,35 +49,76 @@ export class HomeComponent implements OnInit {
   }
 
   onItemsCountChange(itemsAmount: number): void {
+      this.page = 0;
       this.itemsAmount = itemsAmount;
-      this.productService.getProducts(this.itemsAmount).subscribe((products) => {
-      this.products = products;
-    });
-    for (const product of this.products) {
-      console.log(product.category)
-
-    }
-    }
-
+      this.getProducts();
+      this.getMaxPage();
+  }
 
   onChangeCategory(category: string): void {
-        this.productService.getProductsByCategory(this.itemsAmount, category).subscribe((products) => {
-        this.products = products;
-        });
+        this.category = category;
+        this.getProducts();
+        this.getMaxPage();
     }
 
-  getProductsOfCategory(category: string): Product[] {
-    return this.products.filter((product) => product.category === category);
+  getProducts(): void {
+    if (!this.category) {
+      this.productService.getProducts(this.page, this.itemsAmount).subscribe((products) => {
+        this.products = products;
+      });
+    } else {
+      this.productService.getProductsByCategory(this.page, this.itemsAmount, this.category).subscribe((products) => {
+        this.products = products;
+      });
+    }
+
+
   }
 
   sortChange(sort: string) {
     this.sort = sort;
+    this.sortProducts();
+  }
+
+  private sortProducts() {
     this.products.sort((a, b) => {
-      if (sort === 'asc') {
+      if (this.sort === 'asc') {
         return a.price - b.price;
       } else {
         return b.price - a.price;
       }
     });
+  }
+
+  onSearch(search: string) {
+    if(!search) {
+      this.getProducts();
+    }
+    this.products = this.products.filter((product) => {
+      return product.title.toLowerCase().includes(search.toLowerCase());
+    });
+  }
+
+  onChangePage(condition: string) {
+    if(condition === "next" && this.page < this.maxPage - 1) {
+      this.page++;
+      this.getProducts()
+    } else if(condition === "previous" && this.page > 0){
+      this.page--;
+      this.getProducts()
+    }
+
+  }
+
+  private getMaxPage() {
+    if(!this.category) {
+    this.productService.getProductsCount().subscribe((count) => {
+        this.maxPage = Math.ceil(count / this.itemsAmount);
+    });
+  } else {
+      this.productService.getProductsCountByCategory(this.category).subscribe((count) => {
+        this.maxPage = Math.ceil(count / this.itemsAmount);
+      });
+    }
   }
 }

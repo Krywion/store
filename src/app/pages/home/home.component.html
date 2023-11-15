@@ -6,7 +6,19 @@
         <app-filters (changeCategory)="onChangeCategory($event)" (showCategory)="onShowCategory($event)"></app-filters>
     </mat-drawer>
     <mat-drawer-content class="p-6">
-        <app-products-header  (sortChange)="sortChange($event)" (itemsShowCountChange)="onItemsCountChange($event)" (columnsCountChange)="onColumnsCountChange($event)"></app-products-header>
+        <app-products-header [productsCount]="this.products.length" (sortChange)="sortChange($event)" (itemsShowCountChange)="onItemsCountChange($event)" (columnsCountChange)="onColumnsCountChange($event)"></app-products-header>
+        <div class="flex justify-between">
+            <div>
+                <mat-form-field ><input matInput placeholder="Search by title" #filter
+                                        (input)="onSearch(filter.value)"></mat-form-field>
+            </div>
+
+            <div class="flex justify-between">
+                <button mat-button (click)="onChangePage('previous')">Previous</button>
+                <button mat-button (click)="onChangePage('next')">Next</button>
+            </div>
+        </div>
+
         <mat-grid-list gutterSize="16"
         [cols]="cols"
         [rowHeight]="rowHeight">
@@ -20,7 +32,7 @@
             </mat-grid-tile>
             </div>
             <div *ngIf="category">
-                <mat-grid-tile *ngFor="let product of getProductsOfCategory(category)" >
+                <mat-grid-tile *ngFor="let product of products" >
                     <app-product-box
                             (addToCart)="onAddToCart($event)"
                             class="w-full"
